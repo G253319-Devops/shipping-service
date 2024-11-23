@@ -1,0 +1,28 @@
+name: Shipping service Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build_test_release:
+    name: Build Test and Release
+    uses: G253319-Devops/workflows-repository/.github/workflows/main.yml@main
+    with:
+      service_name: shipping-service
+      environment: E3
+    secrets: inherit
+
+  deploy:
+    needs: build_test_release
+    name: Deploy
+    uses: G253319-Devops/workflows-repository/.github/workflows/deploy.yml@main
+    with:
+      service_name: shipping-service
+      environment: E3
+    secrets: inherit
